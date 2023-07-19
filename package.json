@@ -1,0 +1,31 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-typescript": "^7.22.5",
+    "@jest/globals": "^29.6.1",
+    "babel-jest": "^29.6.1",
+    "jest": "^29.6.1"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.12"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "name": "otus-2023-06-qa-js-lipova",
+  "description": "Создано в рамках курса OTUS JavaScript QA Engineer",
+  "version": "1.0.0",
+  "main": "babel.config.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/al1naag/otus-2023-06-qa-js-lipova.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/al1naag/otus-2023-06-qa-js-lipova/issues"
+  },
+  "homepage": "https://github.com/al1naag/otus-2023-06-qa-js-lipova#readme"
+}
