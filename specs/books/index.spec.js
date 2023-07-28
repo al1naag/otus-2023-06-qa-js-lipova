@@ -8,11 +8,14 @@ const userId = '47ab8150-f490-4e2b-94ec-bcf21d548592';
 const isbn = '9781449337711'
 const newIsbn = '9781593277574'
 
-beforeAll(async () => {
+beforeEach(async () => {
     const res = await user.createUser(config.credentials)
     id = res.body.userID;
 });
 
+afterEach(async () => {
+    await user.deleteUser(id)
+});
 describe('BookStore endpoints', () => {
 
     test('Creating a new book', async () => {
@@ -31,7 +34,6 @@ describe('BookStore endpoints', () => {
         expect(response.body.message).toEqual('ISBN already present in the User\'s Collection!');
     });
 
-
     test('Getting the book info', async () => {
         const response = await book.getBook(isbn)
         expect(response.status).toBe(200);
@@ -49,6 +51,7 @@ describe('BookStore endpoints', () => {
     });
 
     test('Updating book for User', async () => {
+        await book.createBook(config.credentials, id, isbn)
         const response = await book.updateBook(config.credentials, id, isbn, newIsbn)
         expect(response.status).toBe(200);
         expect(response.body.userId).toEqual(id);
