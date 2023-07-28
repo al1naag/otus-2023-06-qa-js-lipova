@@ -1,6 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
 import config from "../../framework/config/config.js";
-import user from "../../framework/services/helper/user.js"
+import user from "../../framework/services/helpers/user.js"
 
 let id;
 
