@@ -1,5 +1,5 @@
 import supertest from "supertest"
-import config from "../../config/config.js";
+import config from "../config/config.js";
 const { url } = config
 
 const user = {
@@ -22,19 +22,21 @@ const user = {
             send(payload)
     },
 
-    async deleteUser (id) {
-        const res = await this.generateToken(config.credentials)
+    async getToken(payload){
+    const res = await this.generateToken(payload)
+    return res.body.token
+},
+
+    async deleteUser (id, token) {
         return supertest(url)
             .delete(`/Account/v1/User/${id}`)
-            .set('Authorization', `Bearer ${res.body.token}`)
+            .set('Authorization', `Bearer ${token}`)
     },
 
-    async getUser (id){
-        const res = await this.generateToken(config.credentials)
-
+    async getUser (id, token){
     return supertest(url)
         .get(`/Account/v1/User/${id}`)
-        .set('Authorization', `Bearer ${res.body.token}`)
+        .set('Authorization', `Bearer ${token}`)
 }
 }
 

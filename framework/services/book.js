@@ -1,14 +1,13 @@
 import supertest from "supertest"
-import config from "../../config/config.js";
+import config from "../config/config.js";
 import user from "./user.js";
 const { url } = config
 
 const book = {
-    async createBook(credentials, id, isbn) {
-        const res = await user.generateToken(credentials)
+    async createBook(id, isbn, token) {
         return supertest(url)
             .post('/BookStore/v1/Books')
-            .set('Authorization', `Bearer ${res.body.token}`)
+            .set('Authorization', `Bearer ${token}`)
             .send({
                 "userId": `${id}`,
                 "collectionOfIsbns": [
@@ -19,22 +18,20 @@ const book = {
             })
     },
 
-    async updateBook(credentials, id, isbn, newIsbn) {
-        const res = await user.generateToken(credentials)
+    async updateBook(id, isbn, newIsbn, token) {
         return supertest(url)
             .put(`/BookStore/v1/Books/${isbn}`)
-            .set('Authorization', `Bearer ${res.body.token}`)
+            .set('Authorization', `Bearer ${token}`)
             .send({
                 "userId": `${id}`,
                 "isbn": `${newIsbn}`
             })
     },
 
-    async deleteBook (credentials, id) {
-        const res = await user.generateToken(credentials)
+    async deleteBook (id, token) {
         return supertest(url)
             .delete(`/BookStore/v1/Books?UserId=${id}`)
-            .set('Authorization', `Bearer ${res.body.token}`)
+            .set('Authorization', `Bearer ${token}`)
     },
 
     async getBook(id){
