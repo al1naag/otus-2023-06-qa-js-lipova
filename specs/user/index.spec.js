@@ -1,8 +1,9 @@
 import {describe, expect, test} from '@jest/globals';
 import config from "../../framework/config/config.js";
-import user from "../../framework/services/helper/user.js"
+import user from "../../framework/services/user.js"
 
 let id;
+let token;
 
 describe('User account', () => {
 
@@ -17,7 +18,7 @@ describe('User account', () => {
         async () => {
             const response = await user.createUser({
                 'userName': 'OTUS_QA_JS_LipovaA',
-                'password': config.credentials.password
+                'password': config.credentialsStatic.password
             })
             expect(response.status).toBe(406)
             expect(response.body.code).toEqual('1204')
@@ -46,7 +47,7 @@ describe('User account', () => {
         async () => {
             const response = await user.generateToken({
                 'userName': 'OTUS_QA_JS_LipovaA',
-                'password': config.credentials.password
+                'password': config.credentialsStatic.password
             })
             expect(response.body.result).toEqual('User authorized successfully.');
             expect(response.body.status).toEqual('Success');
@@ -57,8 +58,8 @@ describe('User account', () => {
     test('Authorization with valid credentials',
         async () => {
             const response = await user.login({
-                'userName': 'OTUS_QA_JS_Lipova',
-                'password': config.credentials.password
+                'userName': 'OTUS_QA_JS_LipovaA',
+                'password': config.credentialsStatic.password
             })
             expect(response.body).toEqual(true);
             expect(response.status).toBe(200)
@@ -66,7 +67,7 @@ describe('User account', () => {
 
     test('Authorization with invalid userName should return the error',
         async () => {
-            const response = await user.login({'userName': 'username09090909', 'password': config.credentials.password})
+            const response = await user.login({'userName': 'username09090909', 'password': config.credentialsStatic.password})
             expect(response.status).toBe(404)
             expect(response.body.code).toEqual('1207')
             expect(response.body.message).toEqual('User not found!')
@@ -90,16 +91,18 @@ describe('User account', () => {
 
     test('Getting the user info with valid userID',
         async () => {
-            const response = await user.getUser(id)
-            expect(response.status).toBe(200)
-            expect(response.body.userId).not.toBe(null)
-            expect(response.body.username).not.toBe(null)
-            expect(response.body.books).toEqual([])
+            token = await user.getToken(config.credentials)
+            const r2 = await user.getUser(id, token)
+            expect(r2.status).toBe(200)
+            expect(r2.body.userId).not.toBe(null)
+            expect(r2.body.username).not.toBe(null)
+            expect(r2.body.books).toEqual([])
         });
 
     test('Getting the user info with invalid userID should return the error',
         async () => {
-            const response = await user.getUser(321)
+            token = await user.getToken(config.credentials)
+            const response = await user.getUser(321, token)
             expect(response.status).toBe(401)
             expect(response.body.code).toBe('1207')
             expect(response.body.message).toBe('User not found!')
@@ -107,14 +110,16 @@ describe('User account', () => {
 
     test('Deleting the user',
         async () => {
-            const response = await user.deleteUser(id)
+            token = await user.getToken(config.credentials)
+            const response = await user.deleteUser(id, token)
             expect(response.status).toBe(204)
             expect(response.body).toEqual({})
         });
 
     test('Deleting the user with invalid userID should return the error',
         async () => {
-            const response = await user.deleteUser(321)
+            token = await user.getToken(config.credentials)
+            const response = await user.deleteUser(321, token)
             expect(response.status).toBe(200)
             expect(response.body.code).toBe('1207')
             expect(response.body.message).toBe('User Id not correct!')
