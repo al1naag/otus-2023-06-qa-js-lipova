@@ -20,7 +20,8 @@
     "node-fetch": "^2.6.12"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage --collectCoverageFrom='./src/**'"
   },
   "name": "otus-2023-06-qa-js-lipova",
   "description": "Создано в рамках курса OTUS JavaScript QA Engineer",
