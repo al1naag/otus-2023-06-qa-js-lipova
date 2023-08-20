@@ -1,7 +1,7 @@
 const scores = {
- Anna: 10,
- Olga: 1,
- Ivan: 5,
+  Anna: 10,
+  Olga: 1,
+  Ivan: 5
 }
 
 /**
@@ -11,8 +11,8 @@ const scores = {
  * @returns {number} - The sum of the values in the object
  */
 const getScore = (scores) => {
- const sum = Object.values(scores).reduce((acc, score) => acc + score, 0);
- return sum;
+  const sum = Object.values(scores).reduce((acc, score) => acc + score, 0)
+  return sum
 }
 
-getScore(scores);
+getScore(scores)
